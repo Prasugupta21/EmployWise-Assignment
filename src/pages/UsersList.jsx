@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AlertCircle, CheckCircle, Pencil, Trash2, X } from 'lucide-react';
 import axios from 'axios';
-
+import Navbar from '../components/Navbar';
 const Alert = ({ message, type }) => {
   console.log('Rendering Alert:', { message, type });
   return (
@@ -102,6 +102,8 @@ const UsersList = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 relative">
+      <Navbar/>
+      <div className="pt-16">
       <div className="py-8 px-4 sm:px-6 lg:px-8 pb-32"> 
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl font-bold text-gray-900 mb-8">Users</h1>
@@ -152,6 +154,7 @@ const UsersList = () => {
             ))}
           </div>
         </div>
+      </div>
       </div>
 
       {/* Pagination with background */}

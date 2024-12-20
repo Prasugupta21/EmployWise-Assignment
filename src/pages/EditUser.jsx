@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
+import Navbar from '../components/Navbar';
 
 const Alert = ({ message, type }) => (
   <div 
@@ -107,28 +108,14 @@ const EditUser = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between py-4 sm:py-6">
-            <div className="flex items-center">
-              <button
-                onClick={() => navigate('/users-list')}
-                className="mr-3 p-2 text-gray-600 hover:text-gray-900 rounded-full hover:bg-gray-100"
-              >
-                <ArrowLeft className="w-5 h-5" />
-              </button>
-              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Go Back</h1>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Navbar/>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto  px-4 sm:px-6 lg:px-8 py-6">
         <div className="max-w-md mx-auto">
           {alert && <Alert message={alert.message} type={alert.type} />}
           
-          <form onSubmit={handleSubmit} className="bg-white shadow rounded-lg overflow-hidden">
+          <form onSubmit={handleSubmit} className="bg-white mt-32 shadow rounded-lg overflow-hidden">
           <h1 className="text-xl text-center m-8 sm:text-2xl font-bold text-blue-600">Edit User</h1>
 
             <div className="p-4 sm:p-6 space-y-5">

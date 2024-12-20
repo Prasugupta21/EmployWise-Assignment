@@ -30,6 +30,7 @@ const {token}=response.data;
     const expiryTime = new Date().getTime() + 60 * 60 * 1000; // 1 hour from now
     localStorage.setItem("token", token);
     localStorage.setItem("expiryTime", expiryTime);
+    localStorage.setItem('email',email);
      
         
        navigate('/users-list');
