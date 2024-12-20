@@ -32,6 +32,10 @@ const Login = () => {
   const handleSubmit = async(e) => {
     setError('');
     e.preventDefault();
+    if(password && password.length < 6){
+      setError("Password length must be atleast 6");
+      return;
+    }
     if(validEmail !== email || password !== validPassword) {
       setError("Invalid email or password.");
       return;
