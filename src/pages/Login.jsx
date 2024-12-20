@@ -1,44 +1,56 @@
-import React, { useState } from 'react';
-import { Link ,useNavigate} from 'react-router-dom';
-import { Mail, Lock, EyeOff, Eye } from 'lucide-react';
+
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Mail, Lock, EyeOff, Eye, AlertCircle, Info } from 'lucide-react';
 import axios from 'axios';
-import Alert from "../components/Alert";
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [error,setError]=useState('');
+  const [error, setError] = useState('');
+  const [showCredentials, setShowCredentials] = useState(false);
   const navigate = useNavigate();
   const validEmail = "eve.holt@reqres.in";
   const validPassword = "cityslicka";
   
+  // Auto-dismiss error after 3 seconds
+  useEffect(() => {
+    let timeoutId;
+    if (error) {
+      timeoutId = setTimeout(() => {
+        setError('');
+      }, 3000);
+    }
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [error]);
   
   const handleSubmit = async(e) => {
     setError('');
     e.preventDefault();
-    if(validEmail !== email || password!==validPassword){
-        setError("Invalid email or password.");
-        return;
+    if(validEmail !== email || password !== validPassword) {
+      setError("Invalid email or password.");
+      return;
     }
-try {
-    const response = await axios.post("https://reqres.in/api/login", {
+    try {
+      const response = await axios.post("https://reqres.in/api/login", {
         email,
         password,
       });
-const {token}=response.data;    
-    const expiryTime = new Date().getTime() + 60 * 60 * 1000; // 1 hour from now
-    localStorage.setItem("token", token);
-    localStorage.setItem("expiryTime", expiryTime);
-    localStorage.setItem('email',email);
-     
-        
-       navigate('/users-list');
-}catch(error){
-    setError("Failed to login. Please try again.");
-    console.log('failed to login ', error);
-    
-}
+      const {token} = response.data;    
+      const expiryTime = new Date().getTime() + 60 * 60 * 1000;
+      localStorage.setItem("token", token);
+      localStorage.setItem("expiryTime", expiryTime);
+      localStorage.setItem('email', email);
+      navigate('/users-list');
+    } catch(error) {
+      setError("Failed to login. Please try again.");
+      console.log('failed to login ', error);
+    }
   };
 
   return (
@@ -50,9 +62,39 @@ const {token}=response.data;
               <h1 className="text-2xl font-semibold text-gray-900">Login</h1>
               <p className="text-gray-600 text-sm">Enter your credentials to continue</p>
             </div>
-            {error && (
-                <Alert success={false} message={error}  />
+
+            {/* Mock Credentials Card */}
+            <div className="mb-6 ">
+              <button
+                onClick={() => setShowCredentials(!showCredentials)}
+                className="w-full flex gap-2 p-3 bg-blue-50 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors"
+              >
+                <Info className="h-5 w-5 " />
+                <span className="text-sm  font-medium  ">Click to {showCredentials ? 'hide' : 'view'} mock credentials</span>
+              </button>
+              
+              {showCredentials && (
+                <div className="mt-2  text-center p-3 bg-gray-50 rounded-lg text-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Mail className="h-4 w-4 text-gray-500" />
+                    <span className="text-gray-700 text-center">Email: {validEmail}</span>
+                  </div>
+                  <div className="flex items-center gap-2 ">
+                    <Lock className="h-4 w-4 text-gray-500" />
+                    <span className="text-gray-700">Password: {validPassword}</span>
+                  </div>
+                </div>
               )}
+            </div>
+
+            {/* Error Alert with animation */}
+            {error && (
+              <div className="mb-6 flex items-center gap-2 p-4 bg-red-50 rounded-lg text-red-700 animate-fade-in">
+                <AlertCircle className="h-5 w-5 flex-shrink-0" />
+                <p className="text-sm">{error}</p>
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email Field */}
               <div className="space-y-2">
@@ -102,9 +144,6 @@ const {token}=response.data;
                 </div>
               </div>
 
-         
-              
-
               {/* Submit Button */}
               <button
                 type="submit"
@@ -113,13 +152,9 @@ const {token}=response.data;
                 Sign in
               </button>
             </form>
-
-           
-           
           </div>
         </div>
 
-        {/* Additional branding or info */}
         <div className="mt-4 text-center text-sm text-gray-500">
           By signing in, you agree to our{' '}
           <Link 
