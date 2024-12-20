@@ -1,9 +1,8 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AlertCircle, CheckCircle, Pencil, Trash2, X } from 'lucide-react';
 import axios from 'axios';
+
 const Alert = ({ message, type }) => {
   console.log('Rendering Alert:', { message, type });
   return (
@@ -39,10 +38,8 @@ const UsersList = () => {
   }, [currentPage]);
 
   const showAlert = (message, type) => {
-  
     setAlert({ message, type });
     setTimeout(() => {
-      
       setAlert(null);
     }, 3000);
   };
@@ -72,16 +69,13 @@ const UsersList = () => {
 
   const handleDeleteConfirm = async () => {
     try {
-     
-      const response=await axios.delete(`https://reqres.in/api/users/${userToDelete.id}`);
+      const response = await axios.delete(`https://reqres.in/api/users/${userToDelete.id}`);
       console.log(response);
       setUsers(users.filter(user => user.id !== userToDelete.id));
-      
       showAlert('User successfully deleted', 'success');
     } catch (error) {
       showAlert('Error in deleting user', 'error');
-    }
-    finally{
+    } finally {
       setShowDeleteModal(false);
     }
   };
@@ -98,7 +92,6 @@ const UsersList = () => {
     }
   };
 
-
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
@@ -108,76 +101,83 @@ const UsersList = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto relative">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Users</h1>
-        
-        {alert && (
-          <div className="absolute top-0 right-0 w-full sm:w-auto">
-            <Alert message={alert.message} type={alert.type} />
-          </div>
-        )}
+    <div className="min-h-screen bg-gray-50 relative">
+      <div className="py-8 px-4 sm:px-6 lg:px-8 pb-32"> 
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-3xl font-bold text-gray-900 mb-8">Users</h1>
+          
+          {alert && (
+            <div className="absolute top-0 right-0 w-full sm:w-auto">
+              <Alert message={alert.message} type={alert.type} />
+            </div>
+          )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {users.map((user) => (
-            <div
-              key={user.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
-            >
-              <div className="p-6">
-                <div className="flex items-center">
-                  <img
-                    src={user.avatar || "/api/placeholder/64/64"}
-                    alt={`${user.first_name}'s avatar`}
-                    className="w-16 h-16 rounded-full object-cover"
-                  />
-                  <div className="ml-4 flex-grow">
-                    <h2 className="text-xl font-semibold text-gray-800">
-                      {user.first_name} {user.last_name}
-                    </h2>
-                    <p className="text-gray-500">{user.email}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {users.map((user) => (
+              <div
+                key={user.id}
+                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+              >
+                <div className="p-6">
+                  <div className="flex items-center">
+                    <img
+                      src={user.avatar || "/api/placeholder/64/64"}
+                      alt={`${user.first_name}'s avatar`}
+                      className="w-16 h-16 rounded-full object-cover"
+                    />
+                    <div className="ml-4 flex-grow">
+                      <h2 className="text-xl font-semibold text-gray-800">
+                        {user.first_name} {user.last_name}
+                      </h2>
+                      <p className="text-gray-500">{user.email}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 flex justify-end gap-2">
+                    <button
+                      onClick={() => handleEdit(user)}
+                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                    >
+                      <Pencil className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteClick(user)}
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
                   </div>
                 </div>
-                
-                <div className="mt-4 flex justify-end gap-2">
-                  <button
-                    onClick={() => handleEdit(user)}
-                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
-                  >
-                    <Pencil className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={() => handleDeleteClick(user)}
-                    className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
-                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
+      </div>
 
-        <div className="mt-8 flex items-center justify-center gap-4">
-          <button
-            onClick={handlePrevPage}
-            disabled={currentPage === 1}
-            className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Previous
-          </button>
+      {/* Pagination with background */}
+      <div className="fixed bottom-0 left-0 w-full bg-gray-50 border-t border-gray-200 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center sm:justify-end justify-center gap-4">
+            <button
+              onClick={handlePrevPage}
+              disabled={currentPage === 1}
+              className="px-4 py-2 border items-center border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Previous
+            </button>
 
-          <span className="text-gray-700">
-            Page {currentPage} of {totalPages}
-          </span>
+            <span className="text-gray-700">
+              Page {currentPage} of {totalPages}
+            </span>
 
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Next
-          </button>
+            <button
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 border items-center border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
 
