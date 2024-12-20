@@ -2,6 +2,8 @@
 
 A responsive React-based User Management Dashboard application that allows users to edit and delete user details fetched from an API. The application includes essential features like alerts, loading states, and a navigation bar with user authentication.
 
+
+#### Deploy Link : https://employ-wise-platform.netlify.app
 ## Features
 
 ### Core Features
