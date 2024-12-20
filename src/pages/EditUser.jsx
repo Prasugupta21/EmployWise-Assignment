@@ -1,23 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import Alert from '../components/Alert';
 
-const Alert = ({ message, type }) => (
-  <div 
-    className={`fixed top-4 left-1/2 transform -translate-x-1/2 w-[90%] sm:w-auto z-50 flex items-center gap-2 px-4 py-3 rounded-lg shadow-lg ${
-      type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-    }`}
-  >
-    {type === 'success' ? (
-      <CheckCircle className="w-5 h-5" />
-    ) : (
-      <AlertCircle className="w-5 h-5" />
-    )}
-    <span className="font-medium">{message}</span>
-  </div>
-);
 
 const EditUser = () => {
   const { id } = useParams();
@@ -113,7 +99,9 @@ const EditUser = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto  px-4 sm:px-6 lg:px-8 py-6">
         <div className="max-w-md mx-auto">
-          {alert && <Alert message={alert.message} type={alert.type} />}
+          {alert && 
+           <div className="absolute top-0 right-0 w-full sm:w-auto">
+          <Alert message={alert.message} type={alert.type} /> </div>}
           
           <form onSubmit={handleSubmit} className="bg-white mt-32 shadow rounded-lg overflow-hidden">
           <h1 className="text-xl text-center m-8 sm:text-2xl font-bold text-blue-600">Edit User</h1>

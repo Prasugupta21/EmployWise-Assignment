@@ -1,25 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AlertCircle, CheckCircle, Pencil, Trash2, X } from 'lucide-react';
+import {  Pencil, Trash2, X } from 'lucide-react';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
-const Alert = ({ message, type }) => {
-  console.log('Rendering Alert:', { message, type });
-  return (
-    <div 
-      className={`fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-3 rounded-lg shadow-lg ${
-        type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-      }`}
-    >
-      {type === 'success' ? (
-        <CheckCircle className="w-5 h-5" />
-      ) : (
-        <AlertCircle className="w-5 h-5" />
-      )}
-      <span className="font-medium">{message}</span>
-    </div>
-  );
-};
+import Alert from '../components/Alert';
+
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);

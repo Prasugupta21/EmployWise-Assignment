@@ -1,33 +1,20 @@
+import { AlertCircle, CheckCircle } from "lucide-react";
 import React from "react";
 
-const Alert = ({ success, message ,onClose}) => {
-   
+const Alert = ({ message, type }) => {
   return (
-    <>
-      {success ? (
-        <>
-          <div
-            class="flex flex-col gap-2 p-4 text-sm text-green-700 bg-green-100 border-green-500 dark:bg-green-200 dark:text-green-800 rounded-lg mt-5"
-            role="alert"
-          >
-            <div class="flex items-center" data-testid="flowbite-alert-wrapper">
-              <div className="mx-auto">{message}</div>
-            </div>
-          </div>
-        </>
+    <div 
+      className={`fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-3 rounded-lg shadow-lg ${
+        type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+      }`}
+    >
+      {type === 'success' ? (
+        <CheckCircle className="w-5 h-5" />
       ) : (
-        <>
-          <div
-            class="flex flex-col gap-2 p-4 text-sm text-red-700 bg-red-100 border-red-500 dark:bg-red-200 dark:text-red-800 rounded-lg mt-5"
-            role="alert"
-          >
-            <div class="flex items-center" data-testid="flowbite-alert-wrapper">
-              <div  className='mx-auto'>{message}</div>
-            </div>
-          </div>
-        </>
+        <AlertCircle className="w-5 h-5" />
       )}
-    </>
+      <span className="font-medium">{message}</span>
+    </div>
   );
 };
 
