@@ -32,7 +32,7 @@ const {token}=response.data;
     localStorage.setItem("expiryTime", expiryTime);
      
         
-        alert('Success');
+       navigate('/users-list');
 }catch(error){
     setError("Failed to login. Please try again.");
     console.log('failed to login ', error);
