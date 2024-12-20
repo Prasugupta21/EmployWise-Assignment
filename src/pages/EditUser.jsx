@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Alert from '../components/Alert';
+import axios from 'axios';
 
 
 const EditUser = () => {
@@ -50,24 +51,23 @@ const EditUser = () => {
     setSubmitting(true);
     try {
       const response = await fetch(`https://reqres.in/api/users/${id}`, {
-        method: 'PUT',
+        method: 'PUT', 
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json', // Set the appropriate header
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData), // Convert formData to JSON
       });
       if (response.ok) {
+        const updatedUser=await response.json();
+        setFormData({
+          first_name:updatedUser?.first_name,
+          last_name:updatedUser?.last_name,
+          email:updatedUser?.email
+        })
+
         showAlert('User updated successfully', 'success');
-        setTimeout(() => {
-          navigate('/users-list', { 
-            state: { 
-              alert: { 
-                message: 'User updated successfully', 
-                type: 'success' 
-              } 
-            } 
-          });
-        }, 1000);
+
+        
       }
     } catch (error) {
       showAlert('Error updating user', 'error');
